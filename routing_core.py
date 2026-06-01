@@ -86,7 +86,7 @@ def _parse_routing(text: str) -> list[dict]:
     return entries
 
 
-def _build_index(routing_path: str = "brain/routing.md") -> list[dict]:
+def _build_index(routing_path: str = ROUTING_FILE) -> list[dict]:
     import json
     import datetime
     text = Path(routing_path).read_text(encoding="utf-8")
@@ -124,7 +124,7 @@ def _get_index() -> list[dict]:
     global _index, _last_mtime
     with _index_lock:
         if _index is None:
-            _index = _build_index()
+            _index = _build_index(routing_path=ROUTING_FILE)
             try:
                 _last_mtime = Path(ROUTING_FILE).stat().st_mtime
             except OSError:
@@ -145,9 +145,9 @@ def _watcher_loop() -> None:
             continue
         if mtime != _last_mtime:
             print(
-                f"\n  [HotReload] brain/routing.md changed — rebuilding index...")
+                f"\n  [HotReload] ${ROUTING_FILE} changed — rebuilding index...")
             try:
-                new_index = _build_index()
+                new_index = _build_index(routing_path=ROUTING_FILE)
                 with _index_lock:       # atomic swap: old index stays live until this point
                     _index = new_index
                     _last_mtime = mtime
