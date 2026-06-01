@@ -10,6 +10,7 @@
 | docker build, push image, container registry, build and push | knowledge_card.md |
 | imagepullbackoff, image pull error, cannot pull image | knowledge_card.md |
 | service not healthy, health check failing, deployment failed | knowledge_card.md |
+| office wifi, connect to wifi, wifi setup, corpnet, wifi password, authentication failed wifi | office_wifi.md |
 
 ## Playbooks (procedures — step-by-step workflows)
 

@@ -1,0 +1,57 @@
+name: office_wifi
+description: >
+  New employee asks how to connect to office WiFi. The agent must retrieve
+  the internal WiFi guide — network names, certificate path, and SSO login
+  that no LLM can know from training. Perfect demo of RAG grounding on
+  non-technical internal knowledge.
+
+prompt: "How do I connect my laptop to the office WiFi?"
+
+hard_gates:
+  search_kb_must_be_first: true
+  required_cards:
+    - office_wifi.md
+
+expected_topics:
+  - CorpNet-5G
+  - WPA2-Enterprise
+  - CorpCA-2024
+  - sso.corp.internal
+
+expected_answer_theme: >
+  Answer should include the correct network name CorpNet-5G, authentication
+  type WPA2-Enterprise, the employee email format and SSO password, and
+  the CorpCA-2024 certificate. Should warn against CorpNet-Guest.
+
+pass_threshold: 75
+
+mock_responses:
+  search_kb: |
+    Matched knowledge cards:
+
+      Score : 0.92
+      Load  : brain/office_wifi.md
+      Trigger: office wifi, connect to wifi, wifi setup, corpnet, wifi password
+
+  read_file:
+    office_wifi.md: |
+      # Office WiFi Setup Guide
+
+      Networks:
+      - CorpNet-5G: Employees only — use this
+      - CorpNet-Guest: Visitors only — do NOT connect work laptop here
+      - CorpNet-IoT: Printers only
+
+      First-time Setup (Windows):
+      1. Select CorpNet-5G
+      2. Authentication: WPA2-Enterprise
+      3. Username: your employee email e.g. john.doe@corp.internal
+      4. Password: SSO password (same as laptop login)
+      5. Certificate: select CorpCA-2024 — if missing run:
+         certutil -addstore Root \\fileserver\it\CorpCA-2024.cer
+
+      Common Issues:
+      - "Authentication failed": SSO password expired, reset at https://sso.corp.internal/reset
+      - Connected but can't reach internal sites: you're on CorpNet-Guest, switch to CorpNet-5G
+
+      Off-site: use Cisco AnyConnect VPN at vpn.corp.internal first.
