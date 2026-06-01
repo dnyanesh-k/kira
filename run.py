@@ -70,7 +70,7 @@ READ_FILE_TOOL = {
             "properties": {
                 "path": {
                     "type": "string",
-                    "description": "Filename inside brain/, e.g. 'knowledge_card.md'",
+                    "description": "Filename inside brain/, e.g. 'brain/knowledge_card.md'",
                 }
             },
             "required": ["path"],

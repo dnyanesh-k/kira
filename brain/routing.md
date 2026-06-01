@@ -11,6 +11,7 @@
 | imagepullbackoff, image pull error, cannot pull image | knowledge_card.md |
 | service not healthy, health check failing, deployment failed | knowledge_card.md |
 | office wifi, connect to wifi, wifi setup, corpnet, wifi password, authentication failed wifi | office_wifi.md |
+| on call rotation, on call schedule, incident escalation, who is oncall | oncall_escalation.md |
 
 ## Playbooks (procedures — step-by-step workflows)
 

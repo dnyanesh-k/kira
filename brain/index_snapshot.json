@@ -1,8 +1,8 @@
 {
-  "built_at": "2026-06-01T09:11:55",
+  "built_at": "2026-06-01T18:01:39",
   "model": "sentence-transformers/all-MiniLM-L6-v2",
   "threshold": 0.4,
-  "total_entries": 10,
+  "total_entries": 12,
   "entries": [
     {
       "trigger": "deploy service, kubernetes deployment, release new version, kubectl deploy",
@@ -105,18 +105,52 @@
       ]
     },
     {
-      "trigger": "production incident, service down, outage, incident response, p0, p1",
+      "trigger": "office wifi, connect to wifi, wifi setup, corpnet, wifi password, authentication failed wifi",
       "phrases": [
-        "production incident",
-        "service down",
-        "outage",
-        "incident response",
-        "p0",
-        "p1"
+        "office wifi",
+        "connect to wifi",
+        "wifi setup",
+        "corpnet",
+        "wifi password",
+        "authentication failed wifi"
       ],
       "phrase_count": 6,
       "vector_shape": [
         7,
+        384
+      ],
+      "files": [
+        "office_wifi.md"
+      ]
+    },
+    {
+      "trigger": "on call rotation, on call schedule, incident escalation, who is oncall",
+      "phrases": [
+        "on call rotation",
+        "on call schedule",
+        "incident escalation",
+        "who is oncall"
+      ],
+      "phrase_count": 4,
+      "vector_shape": [
+        5,
+        384
+      ],
+      "files": [
+        "oncall_escalation.md"
+      ]
+    },
+    {
+      "trigger": "production incident, service down, outage, incident response",
+      "phrases": [
+        "production incident",
+        "service down",
+        "outage",
+        "incident response"
+      ],
+      "phrase_count": 4,
+      "vector_shape": [
+        5,
         384
       ],
       "files": [
@@ -140,16 +174,15 @@
       ]
     },
     {
-      "trigger": "post mortem, postmortem, incident review, root cause analysis",
+      "trigger": "post mortem, incident review, root cause analysis",
       "phrases": [
         "post mortem",
-        "postmortem",
         "incident review",
         "root cause analysis"
       ],
-      "phrase_count": 4,
+      "phrase_count": 3,
       "vector_shape": [
-        5,
+        4,
         384
       ],
       "files": [

@@ -16,7 +16,7 @@ from pathlib import Path
 from fastembed import TextEmbedding
 
 MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
-THRESHOLD = 0.40  # slightly lower than production 0.44 for demo friendliness
+THRESHOLD = 0.55  # slightly lower than production 0.44 for demo friendliness
 
 ROUTING_FILE = "brain/routing.md"
 WATCH_INTERVAL = 2.0   # seconds between mtime checks
