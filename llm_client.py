@@ -19,13 +19,14 @@ import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
-from litellm import completion
+from litellm import acompletion
 
 _ROOT = Path(__file__).parent
-load_dotenv(_ROOT / ".env")  # loads .env from mini-aria root; shell env vars still win
+# loads .env from kira root; shell env vars still win
+load_dotenv(_ROOT / ".env")
 
-DEFAULT_AGENT_MODEL = "groq/llama-3.3-70b-versatile"
-DEFAULT_CRITIC_MODEL = "groq/llama-3.3-70b-versatile"
+DEFAULT_AGENT_MODEL = "groq/llama-3.1-8b-instant"
+DEFAULT_CRITIC_MODEL = "groq/llama-3.1-8b-instant"
 
 # LiteLLM logs are noisy in a CLI demo — keep output clean
 os.environ.setdefault("LITELLM_LOG", "ERROR")
@@ -62,7 +63,8 @@ def check_llm_env() -> None:
     model = get_agent_model()
     key_name = _required_env_key(model)
     if not os.environ.get(key_name, "").strip():
-        print(f"\nError: {key_name} is not set (required for LLM_MODEL={model}).")
+        print(
+            f"\nError: {key_name} is not set (required for LLM_MODEL={model}).")
         print("  1. Copy .env.example to .env")
         print(f"  2. Set {key_name} in .env")
         print("  Groq (free):  https://console.groq.com")
@@ -70,7 +72,7 @@ def check_llm_env() -> None:
         sys.exit(1)
 
 
-def chat_completion(
+async def chat_completion(
     *,
     model: str | None = None,
     messages: list[dict],
@@ -80,7 +82,7 @@ def chat_completion(
     temperature: float = 0.1,
 ):
     """
-    Route a chat completion through LiteLLM.
+    Route a chat completion through LiteLLM (async).
     Returns an OpenAI-compatible response (choices, usage, tool_calls).
     """
     model = model or get_agent_model()
@@ -91,6 +93,7 @@ def chat_completion(
         "messages": messages,
         "max_tokens": max_tokens,
         "temperature": temperature,
+        "tool_choice" : "required" 
     }
     if tools is not None:
         kwargs["tools"] = tools
@@ -99,4 +102,4 @@ def chat_completion(
     if fallback and fallback != model:
         kwargs["fallbacks"] = [fallback]
 
-    return completion(**kwargs)
+    return await acompletion(**kwargs)

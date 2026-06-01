@@ -1,0 +1,176 @@
+{
+  "built_at": "2026-06-01T09:11:55",
+  "model": "sentence-transformers/all-MiniLM-L6-v2",
+  "threshold": 0.4,
+  "total_entries": 10,
+  "entries": [
+    {
+      "trigger": "deploy service, kubernetes deployment, release new version, kubectl deploy",
+      "phrases": [
+        "deploy service",
+        "kubernetes deployment",
+        "release new version",
+        "kubectl deploy"
+      ],
+      "phrase_count": 4,
+      "vector_shape": [
+        5,
+        384
+      ],
+      "files": [
+        "knowledge_card.md"
+      ]
+    },
+    {
+      "trigger": "pod crash, crashloopbackoff, pod failing, pod restarting, pod not starting",
+      "phrases": [
+        "pod crash",
+        "crashloopbackoff",
+        "pod failing",
+        "pod restarting",
+        "pod not starting"
+      ],
+      "phrase_count": 5,
+      "vector_shape": [
+        6,
+        384
+      ],
+      "files": [
+        "knowledge_card.md"
+      ]
+    },
+    {
+      "trigger": "rollback deployment, undo deployment, revert release",
+      "phrases": [
+        "rollback deployment",
+        "undo deployment",
+        "revert release"
+      ],
+      "phrase_count": 3,
+      "vector_shape": [
+        4,
+        384
+      ],
+      "files": [
+        "knowledge_card.md"
+      ]
+    },
+    {
+      "trigger": "docker build, push image, container registry, build and push",
+      "phrases": [
+        "docker build",
+        "push image",
+        "container registry",
+        "build and push"
+      ],
+      "phrase_count": 4,
+      "vector_shape": [
+        5,
+        384
+      ],
+      "files": [
+        "knowledge_card.md"
+      ]
+    },
+    {
+      "trigger": "imagepullbackoff, image pull error, cannot pull image",
+      "phrases": [
+        "imagepullbackoff",
+        "image pull error",
+        "cannot pull image"
+      ],
+      "phrase_count": 3,
+      "vector_shape": [
+        4,
+        384
+      ],
+      "files": [
+        "knowledge_card.md"
+      ]
+    },
+    {
+      "trigger": "service not healthy, health check failing, deployment failed",
+      "phrases": [
+        "service not healthy",
+        "health check failing",
+        "deployment failed"
+      ],
+      "phrase_count": 3,
+      "vector_shape": [
+        4,
+        384
+      ],
+      "files": [
+        "knowledge_card.md"
+      ]
+    },
+    {
+      "trigger": "production incident, service down, outage, incident response, p0, p1",
+      "phrases": [
+        "production incident",
+        "service down",
+        "outage",
+        "incident response",
+        "p0",
+        "p1"
+      ],
+      "phrase_count": 6,
+      "vector_shape": [
+        7,
+        384
+      ],
+      "files": [
+        "playbook_incident_response.md"
+      ]
+    },
+    {
+      "trigger": "service degraded, partial outage, investigate production issue",
+      "phrases": [
+        "service degraded",
+        "partial outage",
+        "investigate production issue"
+      ],
+      "phrase_count": 3,
+      "vector_shape": [
+        4,
+        384
+      ],
+      "files": [
+        "playbook_incident_response.md"
+      ]
+    },
+    {
+      "trigger": "post mortem, postmortem, incident review, root cause analysis",
+      "phrases": [
+        "post mortem",
+        "postmortem",
+        "incident review",
+        "root cause analysis"
+      ],
+      "phrase_count": 4,
+      "vector_shape": [
+        5,
+        384
+      ],
+      "files": [
+        "playbook_incident_response.md"
+      ]
+    },
+    {
+      "trigger": "rollback production, emergency rollback, revert prod",
+      "phrases": [
+        "rollback production",
+        "emergency rollback",
+        "revert prod"
+      ],
+      "phrase_count": 3,
+      "vector_shape": [
+        4,
+        384
+      ],
+      "files": [
+        "playbook_incident_response.md"
+      ]
+    }
+  ]
+}

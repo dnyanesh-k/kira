@@ -146,10 +146,9 @@ async def run_scenario(
             mcp_tool_names, groq_tools = await agent_run._build_tools(session)
 
             messages, final_answer = await agent_run._agent_loop(
-                groq=groq_client,
                 session=session,
                 mcp_tool_names=mcp_tool_names,
-                groq_tools=groq_tools,
+                llm_tools=groq_tools,
                 persona=persona,
                 environment=environment,
                 user_input=prompt,

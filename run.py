@@ -1,5 +1,5 @@
 """
-ARIA Mini — entry point.
+KIRA — entry point.
 
 Usage:
     python run.py                        # persona=engineer, env=dev
@@ -33,7 +33,7 @@ def _load_system_prompt() -> str:
         return SYSTEM_PROMPT_FILE.read_text(encoding="utf-8")
     # Fallback if file missing
     return (
-        "You are ARIA. Call search_kb first, then read_file, then answer. "
+        "You are KIRA. Call search_kb first, then read_file, then answer. "
         "Do not answer without retrieving knowledge first."
     )
 
@@ -136,19 +136,19 @@ async def _agent_loop(
     _p()
     if not silent:
         _divider("─")
-
-    while True:
+    MAX_AGENT_STEPS = 8
+    while step <= MAX_AGENT_STEPS:
         step += 1
         model = llm_client.get_agent_model()
         _lg(f"[Step {step}]", f"Calling {model} via LiteLLM...")
         t0 = time.time()
 
-        response = llm_client.chat_completion(
+        response = await llm_client.chat_completion(
             model=model,
             messages=messages,
             tools=llm_tools,
             tool_choice="auto",
-            max_tokens=2048,
+            max_tokens=768,
             temperature=0.1,
         )
 
@@ -163,7 +163,7 @@ async def _agent_loop(
             final_answer = msg.content or "(no response)"
             if not silent:
                 _divider("─")
-                _p(f"\nARIA:\n{final_answer}\n")
+                _p(f"\nKIRA:\n{final_answer}\n")
                 _divider("═")
             return messages, final_answer
 
@@ -268,7 +268,7 @@ async def main(persona: str, environment: str) -> None:
     fallback = llm_client.get_fallback_model()
 
     print(f"\n{'═'*57}")
-    print(f"  ARIA Mini")
+    print(f"  KIRA")
     print(f"  Persona : {persona}  |  Environment : {environment}")
     print(f"  Gateway : LiteLLM")
     print(f"  Model   : {agent_model}")
@@ -331,7 +331,7 @@ async def main(persona: str, environment: str) -> None:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="ARIA Mini — AI assistant POC")
+    parser = argparse.ArgumentParser(description="KIRA — AI assistant POC")
     parser.add_argument(
         "--persona",
         default="engineer",

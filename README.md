@@ -1,4 +1,4 @@
-# KIRA Mini
+# KIRA - Knowledge Intelligence Retrieval Agent
 
 A working POC of an enterprise AI assistant with semantic knowledge routing, MCP tool calling, and persona-based guardrails. Built to demonstrate the core architecture of the KIRA platform.
 
@@ -79,7 +79,7 @@ Every tool call passes through `hooks.py` before execution. It checks three thin
 The model never sees this logic — it cannot bypass it by rephrasing its output.
 
 ### 6. LiteLLM model gateway
-The agent never imports Groq or OpenAI directly. Every LLM call goes through `llm_client.py`, which wraps LiteLLM. This is the same pattern as production ARIA — one internal API, many providers behind it.
+The agent never imports Groq or OpenAI directly. Every LLM call goes through `llm_client.py`, which wraps LiteLLM. This is the same pattern as production — one internal API, many providers behind it.
 
 Swap models without touching code:
 ```bash
@@ -259,7 +259,7 @@ kira/
 |-------|--------|-----|
 | Embeddings | MiniLM (fastembed) | Small, fast, runs offline on CPU |
 | Similarity | NumPy cosine | Sufficient at this scale, no vector DB needed |
-| MCP | FastMCP (stdio) | Same protocol as production ARIA |
+| MCP | FastMCP (stdio) | Same protocol as production |
 | LLM gateway | LiteLLM | Unified API — swap Groq/OpenAI via env var |
 | LLM (default) | groq/llama-3.3-70b-versatile | Free tier, fast inference |
 | Guardrails | hooks.py + persona.yaml | Code-enforced, not prompt-based |
