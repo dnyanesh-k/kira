@@ -18,7 +18,7 @@ from dataclasses import dataclass
 
 from groq import Groq
 
-CRITIC_MODEL = "llama-3.3-70b-versatile"
+CRITIC_MODEL = "llama-3.1-8b-instant"
 
 CRITIC_PROMPT = """You are a strict evaluator for an AI agent called KIRA.
 

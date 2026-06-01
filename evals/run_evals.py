@@ -40,6 +40,7 @@ SCENARIO_DIR = Path(__file__).parent / "scenarios"
 
 # ─── Hard Gate Checkers ────────────────────────────────────────────────────────
 
+
 def _all_tool_calls(messages: list[dict]) -> list[str]:
     """Return tool call names in the order they were made."""
     names: list[str] = []
@@ -75,7 +76,8 @@ def check_hard_gates(scenario: dict, messages: list[dict]) -> list[str]:
     # Gate 1: search_kb must be the very first tool called
     if gates.get("search_kb_must_be_first"):
         if not tool_order:
-            failures.append("GATE FAIL: No tools were called at all (search_kb never invoked).")
+            failures.append(
+                "GATE FAIL: No tools were called at all (search_kb never invoked).")
         elif tool_order[0] != "search_kb":
             failures.append(
                 f"GATE FAIL: search_kb was not first — first tool was '{tool_order[0]}'."
@@ -84,10 +86,13 @@ def check_hard_gates(scenario: dict, messages: list[dict]) -> list[str]:
     # Gate 2: required cards must have been loaded via read_file
     required_cards: list[str] = gates.get("required_cards", [])
     files_read = _files_read(messages)
+    print("\n=== FILES READ ===")
+    print(files_read)
     for card in required_cards:
         matched = any(card in fp for fp in files_read)
         if not matched:
-            failures.append(f"GATE FAIL: Required card '{card}' was never passed to read_file.")
+            failures.append(
+                f"GATE FAIL: Required card '{card}' was never passed to read_file.")
 
     return failures
 
@@ -226,7 +231,8 @@ def print_result(result: dict) -> None:
     print(f"  {'─' * 55}")
     print(f"  Agent answer (truncated):")
     answer_preview = (result["final_answer"] or "")[:300].replace("\n", " ")
-    print(f"    {answer_preview}{'...' if len(result['final_answer']) > 300 else ''}")
+    print(
+        f"    {answer_preview}{'...' if len(result['final_answer']) > 300 else ''}")
 
 
 def print_summary(results: list[dict]) -> None:

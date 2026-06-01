@@ -4,7 +4,7 @@ description: >
   The agent must retrieve the deployment knowledge card and surface
   concrete kubectl steps.
 
-prompt: "How do I deploy my FastAPI service to Kubernetes?"
+prompt: "How do I deploy my AI service?"
 
 # Hard gates — fail immediately if violated
 hard_gates:
