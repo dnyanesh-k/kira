@@ -25,11 +25,13 @@ _ROOT = Path(__file__).parent
 # loads .env from kira root; shell env vars still win
 load_dotenv(_ROOT / ".env")
 
-DEFAULT_AGENT_MODEL = "groq/llama-3.1-8b-instant"
-DEFAULT_CRITIC_MODEL = "groq/llama-3.1-8b-instant"
-
 # LiteLLM logs are noisy in a CLI demo — keep output clean
 os.environ.setdefault("LITELLM_LOG", "ERROR")
+
+# ─── Configuration ────────────────────────────────────────────────────────────
+
+DEFAULT_AGENT_MODEL = os.environ.get("DEFAULT_AGENT_MODEL", "groq/llama-3.1-8b-instant")
+DEFAULT_CRITIC_MODEL = os.environ.get("DEFAULT_CRITIC_MODEL", "groq/llama-3.1-8b-instant")
 
 
 def get_agent_model() -> str:

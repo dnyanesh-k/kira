@@ -1,7 +1,7 @@
 {
-  "built_at": "2026-06-01T18:01:39",
+  "built_at": "2026-06-01T18:56:08",
   "model": "sentence-transformers/all-MiniLM-L6-v2",
-  "threshold": 0.4,
+  "threshold": 0.55,
   "total_entries": 12,
   "entries": [
     {

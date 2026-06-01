@@ -9,17 +9,25 @@ atomically swaps the reference so in-flight queries always see a complete index.
 
 from __future__ import annotations
 
+import os
 import threading
 import time as _time
 import numpy as np
 from pathlib import Path
 from fastembed import TextEmbedding
+from dotenv import load_dotenv
 
-MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
-THRESHOLD = 0.55  # slightly lower than production 0.44 for demo friendliness
+_ROOT = Path(__file__).parent
+load_dotenv(_ROOT / ".env")
 
-ROUTING_FILE = "brain/routing.md"
-WATCH_INTERVAL = 2.0   # seconds between mtime checks
+# ─── Configuration ────────────────────────────────────────────────────────────
+
+MODEL_NAME = os.environ.get(
+    "ROUTING_MODEL_NAME", "sentence-transformers/all-MiniLM-L6-v2")
+THRESHOLD = float(os.environ.get("ROUTING_THRESHOLD", "0.55"))
+ROUTING_FILE = os.environ.get("ROUTING_FILE", "brain/routing.md")
+WATCH_INTERVAL = float(os.environ.get("ROUTING_WATCH_INTERVAL", "2.0"))
+
 
 _model: TextEmbedding | None = None
 _index: list[dict] | None = None
@@ -66,7 +74,8 @@ def _parse_routing(text: str) -> list[dict]:
         files_col = parts[1]
         files = [f.strip() for f in files_col.split(",") if f.strip()]
         # Multi-phrase: split trigger by comma and dash to create individual phrase vectors
-        phrases = [p.strip() for p in trigger_col.replace(" - ", ",").split(",") if p.strip()]
+        phrases = [p.strip() for p in trigger_col.replace(
+            " - ", ",").split(",") if p.strip()]
         if not phrases:
             phrases = [trigger_col]
         entries.append({
@@ -78,7 +87,8 @@ def _parse_routing(text: str) -> list[dict]:
 
 
 def _build_index(routing_path: str = "brain/routing.md") -> list[dict]:
-    import json, datetime
+    import json
+    import datetime
     text = Path(routing_path).read_text(encoding="utf-8")
     entries = _parse_routing(text)
     for entry in entries:
@@ -134,15 +144,18 @@ def _watcher_loop() -> None:
         except OSError:
             continue
         if mtime != _last_mtime:
-            print(f"\n  [HotReload] brain/routing.md changed — rebuilding index...")
+            print(
+                f"\n  [HotReload] brain/routing.md changed — rebuilding index...")
             try:
                 new_index = _build_index()
                 with _index_lock:       # atomic swap: old index stays live until this point
                     _index = new_index
                     _last_mtime = mtime
-                print(f"  [HotReload] Done — {len(new_index)} entries loaded. Snapshot updated: brain/index_snapshot.json\n")
+                print(
+                    f"  [HotReload] Done — {len(new_index)} entries loaded. Snapshot updated: brain/index_snapshot.json\n")
             except Exception as exc:
-                print(f"  [HotReload] Rebuild failed: {exc} — keeping old index.\n")
+                print(
+                    f"  [HotReload] Rebuild failed: {exc} — keeping old index.\n")
 
 
 def start_watcher() -> None:
@@ -151,7 +164,8 @@ def start_watcher() -> None:
     if _watcher_started:
         return
     _watcher_started = True
-    t = threading.Thread(target=_watcher_loop, daemon=True, name="routing-watcher")
+    t = threading.Thread(target=_watcher_loop,
+                         daemon=True, name="routing-watcher")
     t.start()
 
 
