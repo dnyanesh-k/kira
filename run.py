@@ -104,6 +104,7 @@ def _log(label: str, text: str = "", width: int = 55) -> None:
 
 
 def _divider(char: str = "-", width: int = 55) -> None:
+    """Print a horizontal divider line for visual separation in terminal output."""
     print(f"  {char * width}")
 
 
@@ -117,6 +118,27 @@ async def _agent_loop(
     silent: bool = False,                  # True in eval mode — suppresses all prints
     mock_tools: dict | None = None,        # mock proxy: tool_name → canned response string
 ) -> tuple[list[dict], str]:               # returns (messages, final_answer)
+    """
+    Run the ReAct agent loop for a single user turn.
+
+    Sends the user message to the LLM, executes any tool calls (after guardrail check),
+    appends results to the message history, and repeats until the model returns a final
+    answer with no tool calls or MAX_AGENT_STEPS is reached.
+
+    Args:
+        session:        Active MCP ClientSession for calling MCP tools.
+        mcp_tool_names: Set of tool names exposed by the MCP server.
+        llm_tools:      OpenAI-schema tool definitions passed to the LLM.
+        persona:        User persona (e.g. 'engineer', 'viewer') for guardrail checks.
+        environment:    Deployment environment (e.g. 'dev', 'staging').
+        user_input:     The user's question or command.
+        silent:         If True, suppresses all terminal output (used in eval mode).
+        mock_tools:     Optional mock proxy — dict of tool_name → canned response.
+                        Bypasses real MCP/file calls; LLM reasoning still runs for real.
+
+    Returns:
+        Tuple of (full message history, final answer string).
+    """
     import time
 
     messages: list[dict] = [
@@ -262,6 +284,7 @@ async def _build_tools(session: ClientSession) -> tuple[set[str], list[dict]]:
 
 
 async def main(persona: str, environment: str) -> None:
+    """Boot the KIRA agent: start MCP server, build routing index, run interactive chat loop."""
     llm_client.check_llm_env()
 
     agent_model = llm_client.get_agent_model()

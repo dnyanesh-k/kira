@@ -15,7 +15,7 @@
 
 | Trigger | Load |
 |---------|------|
-| production incident, service down, outage, incident response, p0, p1 | playbook_incident_response.md |
+| production incident, service down, outage, incident response | playbook_incident_response.md |
 | service degraded, partial outage, investigate production issue | playbook_incident_response.md |
-| post mortem, postmortem, incident review, root cause analysis | playbook_incident_response.md |
+| post mortem, incident review, root cause analysis | playbook_incident_response.md |
 | rollback production, emergency rollback, revert prod | playbook_incident_response.md |

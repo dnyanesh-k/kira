@@ -92,8 +92,7 @@ async def chat_completion(
         "model": model,
         "messages": messages,
         "max_tokens": max_tokens,
-        "temperature": temperature,
-        "tool_choice" : "required" 
+        "temperature": temperature
     }
     if tools is not None:
         kwargs["tools"] = tools
