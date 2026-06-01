@@ -1,0 +1,47 @@
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Python caching and build files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.mypy_cache/
+
+# Credentials, Keys, and Secrets (CRITICAL for AI apps)
+.env
+.env.local
+.env.*
+secrets.json
+*.pem
+*.key
+
+# Vector Database / Local Storage (RAG specific)
+.chroma/
+chroma_db/
+faiss_index/
+.qdrant/
+pinecone_cache/
+duckdb_data/
+*.db
+*.sqlite
+
+# Local Data, Documents, and Embeddings caches
+data/raw/
+data/processed/
+*.pdf
+*.txt
+*.csv
+*.jsonl
+.cache/
+.huggingface/
+
+# IDEs and System files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
