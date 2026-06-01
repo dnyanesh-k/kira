@@ -79,6 +79,67 @@ READ_FILE_TOOL = {
 }
 
 
+BASH_TOOL = {
+    "type": "function",
+    "function": {
+        "name": "bash",
+        "description": (
+            "Run a shell command and return its output. "
+            "Use for read-only commands like ls, pwd, kubectl get, aws s3 ls, git log, etc. "
+            "Do NOT use for destructive commands (rm, delete, drop) without explicit user confirmation."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "command": {
+                    "type": "string",
+                    "description": "The shell command to run, e.g. 'ls -la' or 'kubectl get pods'",
+                }
+            },
+            "required": ["command"],
+        },
+    },
+}
+
+# Commands that require explicit user confirmation before running
+_BASH_DANGEROUS_PATTERNS = [
+    "rm ", "rmdir", "del ", "delete", "drop ", "truncate",
+    "kubectl delete", "kubectl drain", "aws s3 rm", "aws s3 mv",
+    "git push --force", "git reset --hard",
+]
+
+
+def _execute_bash(command: str) -> str:
+    """Run a shell command with a safety check for destructive patterns."""
+    import subprocess
+
+    cmd_lower = command.lower().strip()
+    for pattern in _BASH_DANGEROUS_PATTERNS:
+        if pattern in cmd_lower:
+            return (
+                f"[SAFETY] Command contains destructive pattern '{pattern}'. "
+                "Refused — ask the user to confirm explicitly before running this."
+            )
+
+    try:
+        result = subprocess.run(
+            command,
+            shell=True,
+            capture_output=True,
+            text=True,
+            timeout=15,
+        )
+        output = result.stdout.strip()
+        stderr = result.stderr.strip()
+        if result.returncode != 0:
+            return f"[exit {result.returncode}]\n{stderr or output or '(no output)'}"
+        return output or "(command ran successfully with no output)"
+    except subprocess.TimeoutExpired:
+        return "[ERROR] Command timed out after 15 seconds."
+    except Exception as exc:
+        return f"[ERROR] {exc}"
+
+
 def _execute_read_file(path_arg: str) -> str:
     """Built-in file reader — scoped to brain/ directory only."""
     # Security: only allow reads inside brain/
@@ -158,7 +219,8 @@ async def _agent_loop(
     _p()
     if not silent:
         _divider("─")
-    MAX_AGENT_STEPS = 8
+    # This I have set specifically becoz GROQ model being used here has rate limit set 6000 token per minute(TPM)    
+    MAX_AGENT_STEPS = 8 
     while step <= MAX_AGENT_STEPS:
         step += 1
         model = llm_client.get_agent_model()
@@ -245,6 +307,8 @@ async def _agent_loop(
                     result = mcp_result.content[0].text if mcp_result.content else "(empty)"
                 elif tool_name == "read_file":
                     result = _execute_read_file(args.get("path", ""))
+                elif tool_name == "bash":
+                    result = _execute_bash(args.get("command", ""))
                 else:
                     result = f"Unknown tool: {tool_name}"
                 tool_ms = (time.time() - t1) * 1000
@@ -280,6 +344,7 @@ async def _build_tools(session: ClientSession) -> tuple[set[str], list[dict]]:
     mcp_tool_names = {t.name for t in tools_response.tools}
     llm_tools = [_mcp_tool_to_schema(t) for t in tools_response.tools]
     llm_tools.append(READ_FILE_TOOL)
+    llm_tools.append(BASH_TOOL)
     return mcp_tool_names, llm_tools
 
 

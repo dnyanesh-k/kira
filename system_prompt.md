@@ -44,3 +44,4 @@ Step 4: Read the content and answer the user
 
 - `search_kb(queries: list[str])` — semantic search over the routing index. Call first always.
 - `read_file(path: str)` — read a file from the brain/ directory by filename.
+- `bash(command: str)` — run a shell command. Use for read-only operations (ls, pwd, kubectl get, git log, aws s3 ls). For any destructive command, tell the user what you would run and ask for confirmation before calling bash.
