@@ -17,11 +17,14 @@ expected_topics:
   - WPA2-Enterprise
   - CorpCA-2024
   - sso.corp.internal
+  - CorpNet-Guest (avoid this)
 
 expected_answer_theme: >
-  Answer should include the correct network name CorpNet-5G, authentication
-  type WPA2-Enterprise, the employee email format and SSO password, and
-  the CorpCA-2024 certificate. Should warn against CorpNet-Guest.
+  Answer must provide clear step-by-step instructions for connecting to CorpNet-5G
+  using WPA2-Enterprise authentication with employee email and SSO password.
+  Must explicitly mention the CorpCA-2024 certificate requirement and where to get it.
+  Must warn against connecting to CorpNet-Guest (for visitors only) and explain
+  the sso.corp.internal password reset URL for troubleshooting.
 
 pass_threshold: 75
 
